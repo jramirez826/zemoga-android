@@ -1,4 +1,4 @@
-package com.jramirez.pruebazemoga.utils
+package com.jramirez.pruebazemoga.domain.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

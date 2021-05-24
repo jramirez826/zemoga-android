@@ -7,7 +7,7 @@ import com.jramirez.pruebazemoga.data.web.repository.PostRepository
 import com.jramirez.pruebazemoga.data.web.repository.PostRepositoryImpl
 import com.jramirez.pruebazemoga.domain.entity.UIPost
 import com.jramirez.pruebazemoga.domain.ext.toUIPost
-import com.jramirez.pruebazemoga.utils.InternetManager
+import com.jramirez.pruebazemoga.domain.utils.InternetManager
 
 class PostInteractor(
     override var context: Context,
