@@ -1,4 +1,4 @@
-package com.jramirez.pruebazemoga.presentation.main.allposts
+package com.jramirez.pruebazemoga.presentation.posts.allposts
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
