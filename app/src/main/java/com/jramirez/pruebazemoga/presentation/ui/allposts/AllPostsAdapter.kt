@@ -1,4 +1,4 @@
-package com.jramirez.pruebazemoga.presentation.posts.allposts
+package com.jramirez.pruebazemoga.presentation.ui.allposts
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import com.jramirez.pruebazemoga.domain.entity.UIPost
 import com.jramirez.pruebazemoga.presentation.util.CellClickListener
 import com.jramirez.pruebazemoga.presentation.util.CellRemovedListener
 
-class AllPostsAdapter(private val cellClickListener: CellClickListener<UIPost>? = null) :
+class AllPostsAdapter(private val cellClickListener: CellClickListener<UIPost>) :
     RecyclerView.Adapter<AllPostsViewHolder>(), CellRemovedListener {
 
     private val list: MutableList<UIPost> = mutableListOf()
@@ -25,6 +25,9 @@ class AllPostsAdapter(private val cellClickListener: CellClickListener<UIPost>? 
             readMark.visibility = if (!item.isRead && position < 20) View.VISIBLE else View.GONE
             favoriteMark.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
             labDescription.text = item.body
+            root.setOnClickListener {
+                cellClickListener.onCellClickListener(item)
+            }
         }
     }
 
@@ -38,6 +41,14 @@ class AllPostsAdapter(private val cellClickListener: CellClickListener<UIPost>? 
     fun update(items: List<UIPost>) {
         list.clear()
         list.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun updateItem(item: UIPost) {
+        list.find { it.id == item.id }?.apply {
+            isFavorite = item.isFavorite
+            isRead = item.isRead
+        }
         notifyDataSetChanged()
     }
 

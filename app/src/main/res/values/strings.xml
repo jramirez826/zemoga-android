@@ -3,4 +3,5 @@
     <string name="tab_all_post">Todos</string>
     <string name="tab_favorite_post">Favoritos</string>
     <string name="menu_refresh">Actualizar</string>
+    <string name="menu_favorite">Favorito</string>
 </resources>

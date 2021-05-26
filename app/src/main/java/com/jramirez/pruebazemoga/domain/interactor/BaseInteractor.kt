@@ -6,7 +6,7 @@ import com.jramirez.pruebazemoga.data.web.ResponseHandler
 
 interface BaseInteractor<P, R> {
 
-    var context: Context
+    val context: Context
 
     val responseHandler: ResponseHandler
         get() = ResponseHandler()

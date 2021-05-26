@@ -10,7 +10,7 @@ import com.jramirez.pruebazemoga.domain.ext.toUIPost
 import com.jramirez.pruebazemoga.domain.utils.InternetManager
 
 class PostInteractor(
-    override var context: Context,
+    override val context: Context,
     private val postRepository: PostRepository = PostRepositoryImpl()
 ) : BaseInteractor<Nothing, List<UIPost>> {
 
@@ -23,8 +23,8 @@ class PostInteractor(
 
         val result = when (call.status) {
             Status.SUCCESS -> {
-                val items = call.data?.map { it.toUIPost() } ?: emptyList()
-                responseHandler.handleSuccess(items)
+                val items = call.data?.map { it.toUIPost() }
+                responseHandler.handleSuccess(items!!)
             }
             Status.ERROR -> responseHandler.handleException(call.message ?: "")
         }

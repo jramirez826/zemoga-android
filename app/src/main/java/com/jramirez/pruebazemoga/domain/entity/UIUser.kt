@@ -1,7 +1,6 @@
 package com.jramirez.pruebazemoga.domain.entity
 
-data class User(
-    val id: Int,
+data class UIUser(
     val name: String,
     val username: String,
     val email: String,

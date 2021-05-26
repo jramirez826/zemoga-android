@@ -12,11 +12,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PruebaZemoga">
+        android:theme="@style/Theme.PruebaZemoga.NoActionBar">
         <activity
-            android:name=".presentation.posts.allposts.PostsActivity"
+            android:name=".presentation.ui.detailpost.PostDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.ui.allposts.PostsActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.PruebaZemoga.NoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

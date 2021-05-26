@@ -1,9 +1,10 @@
-package com.jramirez.pruebazemoga.presentation.posts.allposts
+package com.jramirez.pruebazemoga.presentation.ui.allposts
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -12,15 +13,15 @@ import com.jramirez.pruebazemoga.R
 import com.jramirez.pruebazemoga.databinding.ActivityPostsBinding
 import com.jramirez.pruebazemoga.domain.entity.UIPost
 import com.jramirez.pruebazemoga.presentation.application.ZemogaApplication
-import com.jramirez.pruebazemoga.presentation.util.CellClickListener
 import com.jramirez.pruebazemoga.presentation.util.DeleteItemCallback
+import com.jramirez.pruebazemoga.presentation.util.IntentConstants
 
-class PostsActivity : AppCompatActivity(), CellClickListener<UIPost>,
+class PostsActivity : AppCompatActivity(),
     TabLayout.OnTabSelectedListener {
 
     private lateinit var binding: ActivityPostsBinding
-    private val adapter: AllPostsAdapter = AllPostsAdapter(this)
-    private val deleteItemCallback: DeleteItemCallback = DeleteItemCallback(adapter)
+    private val adapter: AllPostsAdapter by lazy { AllPostsAdapter(allPostsViewModel) }
+    private val deleteItemCallback: DeleteItemCallback by lazy { DeleteItemCallback(adapter) }
     private lateinit var allPostsViewModel: AllPostsViewModel
     private lateinit var tabAll: TabLayout.Tab
     private lateinit var tabFavorite: TabLayout.Tab
@@ -31,7 +32,7 @@ class PostsActivity : AppCompatActivity(), CellClickListener<UIPost>,
         binding = ActivityPostsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         allPostsViewModel =
-            ViewModelProvider(this, AllPostsViewModelFactory(ZemogaApplication.instance))
+            ViewModelProvider(this)
                 .get(AllPostsViewModel::class.java)
         setUpBinding()
         setUpObserver()
@@ -57,13 +58,14 @@ class PostsActivity : AppCompatActivity(), CellClickListener<UIPost>,
     }
 
     private fun setUpObserver() {
-        allPostsViewModel.livePosts.observe(this, {
-            adapter.update(it)
-        })
-    }
-
-    override fun onCellClickListener(item: UIPost) {
-        Toast.makeText(this, item.id, Toast.LENGTH_SHORT).show()
+        with(allPostsViewModel) {
+            livePosts.observe(this@PostsActivity, {
+                adapter.update(it)
+            })
+            liveIntent.observe(this@PostsActivity, {
+                startActivityForResult(it, IntentConstants.REQUEST_CODE)
+            })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -90,5 +92,15 @@ class PostsActivity : AppCompatActivity(), CellClickListener<UIPost>,
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
         onTabSelected(tab)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IntentConstants.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val post = data?.getParcelableExtra<UIPost>(IntentConstants.UI_POST)
+            post?.let {
+                adapter.updateItem(it)
+            }
+        }
     }
 }
